@@ -62,7 +62,7 @@ export default function Signup() {
             const result = await authClient.signUp.email({
                 ...data,
                 callbackURL: "/",
-            },{
+            }, {
                 onSuccess: (data) => {
                     toast.success("Success!", {
                         description: 'Account created successfully!',
@@ -71,17 +71,38 @@ export default function Signup() {
                     router.push("/");
                 },
                 onError: (error) => {
-                    toast.error("", { description: error.error?.message }  );
+                    toast.error("", { description: error.error?.message });
                 }
             });
-            console.log(result);
             
+
         } catch (error) {
             toast.error("Error", {
                 description: "Something went wrong. Please try again.",
             });
             console.log(error);
         } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    const socialSignup = async (provider: string) => {
+        setIsSubmitting(true);
+        try {
+            authClient.signIn.social({
+                provider: provider
+            }, {
+                onSuccess: (data) => {
+                    console.log(data);
+                    // router.push("/");
+                },
+                onError: (error) => {
+                    toast.error(error.error?.message);
+                }
+            })
+        } catch (error) {
+            throw error;
+        }finally {
             setIsSubmitting(false);
         }
     };
@@ -101,11 +122,11 @@ export default function Signup() {
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-3">
-                        <Button type="button" variant="outline">
+                        <Button type="button" variant="outline" onClick={() => socialSignup("google")} >
                             <Icons.google />
                             <span>Google</span>
                         </Button>
-                        <Button type="button" variant="outline">
+                        <Button type="button" variant="outline" onClick={() => socialSignup("github")}>
                             <Icons.gitHub />
                             <span>Github</span>
                         </Button>
@@ -130,7 +151,7 @@ export default function Signup() {
                                     )}
                                 />
 
-                               
+
                             </div>
 
                             <FormField
@@ -172,7 +193,7 @@ export default function Signup() {
                     <p className="text-accent-foreground text-center text-sm">
                         Have an account?
                         <Button asChild variant="link" className="px-2 ml-3">
-                            <Link href="/auth/sign-in">Sign In</Link>
+                            <Link href="/sign-in">Sign In</Link>
                         </Button>
                     </p>
                 </div>
