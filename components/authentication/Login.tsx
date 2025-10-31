@@ -56,31 +56,20 @@ export default function Login() {
                 password: values.password,
                 callbackURL: "/",
                 rememberMe: false
-                 
-            },{
-               
+
+            }, {
+
                 onSuccess: (data) => {
-                    
+
                     router.push("/");
                 },
                 onError: (error) => {
-                    toast.error( error.error?.message );
+                    toast.error(error.error?.message);
                 }
             }
-        )
+            )
 
-        console.log("Result", result)
-            // if (result.success) {
-            //   toast.success("Success!", {
-            //     description: result.message,
-            //   });
-            //   // Optional: redirect to login page
-            //   router.push("/dashboard");
-            // } else {
-            //   toast.error("Error", {
-            //     description: result.message,
-            //   });
-            // }
+            console.log("Result", result)
         } catch (error) {
             toast.error("Error", {
                 description: "Something went wrong. Please try again.",
@@ -90,6 +79,18 @@ export default function Login() {
             setIsLoading(false);
         }
     }
+    const socialSignin = async (provider: string) => {
+        authClient.signIn.social({
+            provider: provider
+        }, {
+            onSuccess: (data) => {
+                console.log(data);
+            },
+            onError: (error) => {
+                toast.error(error.error?.message);
+            }
+        })
+    };
 
     return (
         <section className="flex min-h-screen bg-zinc-50 px-4 py-16 md:py-32 dark:bg-transparent">
@@ -106,11 +107,11 @@ export default function Login() {
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-3">
-                        <Button type="button" variant="outline">
+                        <Button type="button" variant="outline" onClick={() => socialSignin("google")}>
                             <Icons.google />
                             <span>Google</span>
                         </Button>
-                        <Button type="button" variant="outline">
+                        <Button type="button" variant="outline" onClick={() => socialSignin("github")}>
                             <Icons.gitHub />
                             <span>Github</span>
                         </Button>
@@ -171,21 +172,21 @@ export default function Login() {
                     <p className="text-accent-foreground text-center text-sm">
                         Don&apos;t have an account?
                         <Button asChild variant="link" className="ml-3 px-2">
-                            <Link href="/auth/sign-up">Create account</Link>
+                            <Link href="/sign-up">Create account</Link>
                         </Button>
                     </p>
                 </div>
                 <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4 pb-4 pt-1">
                     {/* <p> */}
-                        By clicking sign in, you agree to our{" "}
-                        <Link href="/terms" className="underline">
-                            Terms of Service
-                        </Link>{" "}
-                        and{" "}
-                        <Link href="/privacy" className="underline">
-                            Privacy Policy
-                        </Link>
-                        .
+                    By clicking sign in, you agree to our{" "}
+                    <Link href="/terms" className="underline">
+                        Terms of Service
+                    </Link>{" "}
+                    and{" "}
+                    <Link href="/privacy" className="underline">
+                        Privacy Policy
+                    </Link>
+                    .
                     {/* </p> */}
                 </div>
             </div>
