@@ -74,7 +74,7 @@ export default function Signup() {
                     toast.error("", { description: error.error?.message });
                 }
             });
-            console.log(result);
+            
 
         } catch (error) {
             toast.error("Error", {
@@ -87,17 +87,24 @@ export default function Signup() {
     };
 
     const socialSignup = async (provider: string) => {
-        authClient.signIn.social({
-            provider: provider
-        }, {
-            onSuccess: (data) => {
-                console.log(data);
-                // router.push("/");
-            },
-            onError: (error) => {
-                toast.error(error.error?.message);
-            }
-        })
+        setIsSubmitting(true);
+        try {
+            authClient.signIn.social({
+                provider: provider
+            }, {
+                onSuccess: (data) => {
+                    console.log(data);
+                    // router.push("/");
+                },
+                onError: (error) => {
+                    toast.error(error.error?.message);
+                }
+            })
+        } catch (error) {
+            throw error;
+        }finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -115,8 +122,8 @@ export default function Signup() {
                     </div>
 
                     <div className="mt-6 grid grid-cols-2 gap-3">
-                        <Button type="button" variant="outline">
-                            <Icons.google onClick={() => socialSignup("google")} />
+                        <Button type="button" variant="outline" onClick={() => socialSignup("google")} >
+                            <Icons.google />
                             <span>Google</span>
                         </Button>
                         <Button type="button" variant="outline" onClick={() => socialSignup("github")}>

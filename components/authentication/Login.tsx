@@ -74,22 +74,30 @@ export default function Login() {
             toast.error("Error", {
                 description: "Something went wrong. Please try again.",
             });
-            console.log(error);
+            // console.log(error);
         } finally {
             setIsLoading(false);
         }
     }
     const socialSignin = async (provider: string) => {
-        authClient.signIn.social({
-            provider: provider
-        }, {
-            onSuccess: (data) => {
-                console.log(data);
-            },
-            onError: (error) => {
-                toast.error(error.error?.message);
-            }
-        })
+        setIsLoading(true);
+        try {
+            
+            authClient.signIn.social({
+                provider: provider
+            }, {
+                onSuccess: (data) => {
+                    router.push("/");
+                },
+                onError: (error) => {
+                    toast.error(error.error?.message);
+                }
+            })
+        } catch (error) {
+            
+        }finally {
+            setIsLoading(false);
+        }
     };
 
     return (
