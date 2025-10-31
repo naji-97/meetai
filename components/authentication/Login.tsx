@@ -86,9 +86,9 @@ export default function Login() {
             authClient.signIn.social({
                 provider: provider
             }, {
-                onSuccess: (data) => {
-                    router.push("/");
-                },
+                // onSuccess: (data) => {
+                //     router.push("/");
+                // },
                 onError: (error) => {
                     toast.error(error.error?.message);
                 }
