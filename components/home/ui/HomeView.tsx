@@ -1,42 +1,18 @@
 "use client"
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
-    const router = useRouter();
-    const { data: session, isPending: isLoading } = authClient.useSession();
-    const signOut = async () => {
-        try {
-            const data = await authClient.signOut({
-                fetchOptions: {
-                    onSuccess: () => {
-                        router.push("/sign-in");
-                        
-                    }
-                }
-            })
-            
-
-        } catch (error) {
-            console.log(error);
-
-        }
-    }
-    if (isLoading) {
-        return (
-            <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-                <p>Loading...</p>
-            </div>
-        )
-    }
+    const trpc = useTRPC();
+    // const greeting = useQuery(trpc.hello.queryOptions({ text: 'world' }));
+    const {data}= useQuery(trpc.hello.queryOptions({text:"world"}));
     return (
         <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-            <Button size="lg" onClick={signOut}>
-                LogOut
-            </Button>
-            <p>Hello, {session?.user?.name} </p>
+            {data?.greeting}
         </div>
     );
 }
