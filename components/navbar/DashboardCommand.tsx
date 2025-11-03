@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react'
-import { CommandDialog, CommandInput, CommandSeparator, CommandShortcut } from '../ui/command'
+import { CommandDialog, CommandInput, CommandResponsiveDialog, CommandSeparator, CommandShortcut } from '../ui/command'
 import { CommandEmpty, CommandGroup, CommandItem, CommandList } from 'cmdk';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 const DashboardCommand = ({open, setOpen}: Props) => {
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Find a meeting or agent" />
           <CommandList>
               <CommandEmpty>No results found.</CommandEmpty>
@@ -45,7 +45,7 @@ const DashboardCommand = ({open, setOpen}: Props) => {
                   </CommandItem>
               </CommandGroup>
           </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   )
 }
 
