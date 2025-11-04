@@ -1,6 +1,6 @@
 import {  createTRPCRouter } from '../init';
 
-import { agentsRouter } from '@/models/server/procedures';
+import { agentsRouter } from '@/models/agents/server/procedures';
 export const appRouter = createTRPCRouter({
   agents: agentsRouter
 });
